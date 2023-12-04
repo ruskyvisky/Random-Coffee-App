@@ -15,7 +15,10 @@ public class Coffee {
     @Id
     @GeneratedValue
     private Long id;
-    private String name;
-    private String description;
+    private String CoffeeName;
+    private String CoffeeIngredients;
+    private String CoffeeCategory;
+    private String CoffeePrepareTime;
+    private String CoffeeProfile;
 
 }
