@@ -2,10 +2,20 @@ package com.coffee.Random.Coffee.App.Messages;
 
 public enum Message {
     /** Messages */
-    SUCCESS("SUCCESS", "İşlem Başarılı"),
-    BAD_REQUEST("BAD_REQUEST", "Hatalı istek."),
-    NOT_FOUND("NOT_FOUND", "Bulunamadı."),
-    SYSTEM_ERROR("SYSTEM_ERROR", "Sistem hatası.");
+    SUCCESS("SUCCESS", "Success"),
+    BAD_REQUEST("BAD_REQUEST", "Bad Request."),
+    NOT_FOUND("NOT_FOUND", "Not Found."),
+    SYSTEM_ERROR("SYSTEM_ERROR", "System Error."),
+
+    DATA_TOO_LONG("DATA_TOO_LONG", "Data Too Long."),
+
+    DATA_TOO_SHORT("DATA_TOO_SHORT", "Data Too Short."),
+
+    ALREADY_EXISTS("ALREADY_EXISTS", "This Coffee Already Exists."),
+    MISSING_DATA("MISSING_DATA", "Missing Data."),
+
+    DATA_CONTAINS_NUMBER("DATA_CONTAINS_NUMBER", "Data Contains Number.");
+
 
 
 
