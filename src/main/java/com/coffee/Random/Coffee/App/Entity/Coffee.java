@@ -1,5 +1,6 @@
 package com.coffee.Random.Coffee.App.Entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(name = "Coffee", description = "Coffee Entity")
 public class Coffee {
     @Id
     @GeneratedValue
