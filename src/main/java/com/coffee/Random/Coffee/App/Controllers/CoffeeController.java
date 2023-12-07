@@ -40,6 +40,13 @@ public class CoffeeController {
         return CoffeeService.deleteCoffee(id);
     }
 
+    @PutMapping("/update/{id}")
+    @Operation(summary = "Update Coffee", description = "Update Coffee")
+    public ResponseEntity<Object> updateCoffee(@PathVariable Long id, @RequestBody Coffee coffee) {
+
+        return CoffeeService.updateCoffee(id, coffee);
+    }
+
 
 
 }

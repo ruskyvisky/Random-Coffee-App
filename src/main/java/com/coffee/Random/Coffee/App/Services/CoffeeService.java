@@ -24,13 +24,6 @@ public class CoffeeService {
         this.coffeeRepository = coffeeRepository;
     }
     public ResponseEntity<Object> getRandomizedCoffee() {
-
-
-
-
-
-
-
         return ResponseHandler.generateResponse(Message.SUCCESS.getDesc(), HttpStatus.OK, coffeeRepository.findRandomCoffee());
     }
 
@@ -77,6 +70,45 @@ public class CoffeeService {
         }
         coffeeRepository.deleteById(id);
         return ResponseHandler.generateResponse(Message.SUCCESS.getDesc(), HttpStatus.OK, null);
+    }
+
+    @Transactional
+    public ResponseEntity<Object> updateCoffee(long id, Coffee coffee){
+
+        if(coffee.getCoffeeName() == null || coffee.getCoffeeIngredients() == null || coffee.getCoffeeCategory() == null || coffee.getCoffeePrepareTime() == null || coffee.getCoffeeProfile() == null){
+            return ResponseHandler.generateResponse(Message.MISSING_DATA.getDesc(), HttpStatus.BAD_REQUEST, null);
+        }
+        if(coffee.getCoffeeName().isEmpty() || coffee.getCoffeeIngredients().isEmpty() || coffee.getCoffeeCategory().isEmpty() || coffee.getCoffeePrepareTime().isEmpty() || coffee.getCoffeeProfile().isEmpty()){
+            return ResponseHandler.generateResponse(Message.MISSING_DATA.getDesc(), HttpStatus.BAD_REQUEST, null);
+        }
+        if(coffee.getCoffeeName().isBlank() || coffee.getCoffeeIngredients().isBlank() || coffee.getCoffeeCategory().isBlank() || coffee.getCoffeePrepareTime().isBlank() || coffee.getCoffeeProfile().isBlank()){
+            return ResponseHandler.generateResponse(Message.MISSING_DATA.getDesc(), HttpStatus.BAD_REQUEST, null);
+        }
+        if(coffee.getCoffeeName().length() > 50 || coffee.getCoffeeIngredients().length() > 50 || coffee.getCoffeeCategory().length() > 50 || coffee.getCoffeePrepareTime().length() > 50 || coffee.getCoffeeProfile().length() > 50){
+            return ResponseHandler.generateResponse(Message.DATA_TOO_LONG.getDesc(), HttpStatus.BAD_REQUEST, null);
+        }
+        if(coffee.getCoffeeName().length() < 3 || coffee.getCoffeeIngredients().length() < 3 || coffee.getCoffeeCategory().length() < 3 || coffee.getCoffeePrepareTime().length() < 3 || coffee.getCoffeeProfile().length() < 3){
+            return ResponseHandler.generateResponse(Message.DATA_TOO_SHORT.getDesc(), HttpStatus.BAD_REQUEST, null);
+        }
+        if(coffee.getCoffeeName().matches(".*\\d.*")  || coffee.getCoffeeCategory().matches(".*\\d.*")  || coffee.getCoffeeProfile().matches(".*\\d.*")){
+            return ResponseHandler.generateResponse(Message.DATA_CONTAINS_NUMBER.getDesc(), HttpStatus.BAD_REQUEST, null);
+        }
+
+        var existingCoffee = coffeeRepository.findByCoffeeName(coffee.getCoffeeName());
+        System.out.println(existingCoffee);
+        if(existingCoffee != null){
+            return ResponseHandler.generateResponse(Message.ALREADY_EXISTS.getDesc(), HttpStatus.BAD_REQUEST, null);
+        }
+
+        coffeeRepository.save(coffee);
+        CoffeeDTO coffeeDTO = new CoffeeDTO();
+        coffeeDTO.setCoffeeName(coffee.getCoffeeName());
+        coffeeDTO.setCoffeeIngredients(coffee.getCoffeeIngredients());
+        coffeeDTO.setCoffeeCategory(coffee.getCoffeeCategory());
+        coffeeDTO.setCoffeePrepareTime(coffee.getCoffeePrepareTime());
+        coffeeDTO.setCoffeeProfile(coffee.getCoffeeProfile());
+
+        return ResponseHandler.generateResponse(Message.SUCCESS.getDesc(), HttpStatus.OK, coffeeDTO);
     }
 
 
