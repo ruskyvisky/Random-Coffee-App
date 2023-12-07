@@ -8,6 +8,7 @@ import com.coffee.Random.Coffee.App.ResponseHandler.ResponseHandler;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -23,16 +24,14 @@ public class CoffeeService {
         this.coffeeRepository = coffeeRepository;
     }
     public ResponseEntity<Object> getRandomizedCoffee() {
-        long rowNumber = coffeeRepository.count();
-        long randomRowNumber = rand.nextInt((int) rowNumber) + 1;
-
-        Optional<Coffee> randomCoffee = coffeeRepository.findById(randomRowNumber);
-        if (randomCoffee.isEmpty()) {
-            return ResponseHandler.generateResponse(Message.NOT_FOUND.getDesc(), HttpStatus.NOT_FOUND, null);
-        }
 
 
-        return ResponseHandler.generateResponse(Message.SUCCESS.getDesc(), HttpStatus.OK, randomCoffee);
+
+
+
+
+
+        return ResponseHandler.generateResponse(Message.SUCCESS.getDesc(), HttpStatus.OK, coffeeRepository.findRandomCoffee());
     }
 
     @Transactional
@@ -57,6 +56,7 @@ public class CoffeeService {
         }
 
         var existingCoffee = coffeeRepository.findByCoffeeName(coffee.getCoffeeName());
+        System.out.println(existingCoffee);
         if(existingCoffee != null){
             return ResponseHandler.generateResponse(Message.ALREADY_EXISTS.getDesc(), HttpStatus.BAD_REQUEST, null);
         }
@@ -69,6 +69,16 @@ public class CoffeeService {
         coffeeDTO.setCoffeeProfile(coffee.getCoffeeProfile());
         return ResponseHandler.generateResponse(Message.SUCCESS.getDesc(), HttpStatus.OK, coffeeDTO);
     }
+
+    public ResponseEntity<Object> deleteCoffee(Long id){
+        Optional<Coffee> coffee = coffeeRepository.findById(id);
+        if (coffee.isEmpty()) {
+            return ResponseHandler.generateResponse(Message.NOT_FOUND.getDesc(), HttpStatus.NOT_FOUND, null);
+        }
+        coffeeRepository.deleteById(id);
+        return ResponseHandler.generateResponse(Message.SUCCESS.getDesc(), HttpStatus.OK, null);
+    }
+
 
 
 }

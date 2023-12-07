@@ -33,6 +33,12 @@ public class CoffeeController {
         return CoffeeService.addNewCoffee(coffee);
     }
 
+    @DeleteMapping("/delete/{id}")
+    @Operation(summary = "Delete Coffee", description = "Delete Coffee")
+    public ResponseEntity<Object> deleteCoffee(@PathVariable Long id) {
+
+        return CoffeeService.deleteCoffee(id);
+    }
 
 
 
